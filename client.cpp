@@ -11,7 +11,7 @@
 int main () {
     int sock = 0;
     struct sockaddr_in serv_addr;
-    const char *hello = "Hello from the client";
+    char buffer[1024] = {0};
 
     //create socket
     sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -35,9 +35,21 @@ int main () {
       return -1;
     }
   
-    // Send data
-    send(sock, hello, strlen(hello), 0);
-    std::cout << "Message sent" << std::endl;
+    // Communicate
+    while (true) {
+        std::string message;
+        std::cout << "Client: ";
+        std::getline(std::cin, message);
+        send(sock, message.c_str(), message.length(), 0);
+
+        memset(buffer, 0, sizeof(buffer));
+        int valread = read(sock, buffer, 1024);
+        if (valread <= 0) {
+            std::cout << "Server closed connection.\n";
+            break;
+        }
+        std::cout << "Server: " << buffer << std::endl;
+    }
   
     // Close socket
     close(sock);

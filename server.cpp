@@ -4,6 +4,7 @@
 
 #include <cstring>
 #include <iostream>
+#include <string>
 
 #define PORT 8080
 
@@ -50,9 +51,22 @@ int main() {
             exit(EXIT_FAILURE);
     }
 
-    // Read data
-    read(new_socket, buffer, 1024);
-    std::cout << "Message from client: " << buffer << std::endl;
+    while (true) {  
+        memset(buffer, 0, sizeof(buffer));
+        int valread = read(new_socket, buffer, 1024);
+        if (valread == 0) {
+            std::cout << "Connection Closed.\n";
+            break;
+        } 
+        
+        std::cout << "Client: " << buffer << std::endl;
+
+        std::string response;
+        std::cout << "Server: ";
+        std::getline(std::cin, response);
+        send(new_socket, response.c_str(), response.length(), 0);
+
+    }
 
     // Close socket
     close(new_socket);
