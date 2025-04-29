@@ -21,9 +21,7 @@ This is a simple terminal-based TCP chat server and client built in C++. It supp
 
 Run the following in your terminal (WSL or Linux preferred):
 
-```bash
 make
-
 
 ## Run Instructions
 Do the following command to start the server
