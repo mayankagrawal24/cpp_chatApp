@@ -1,18 +1,26 @@
 # Compiler
 CXX = g++
-
-# Compiler flags
 CXXFLAGS = -Wall -Wextra -std=c++17
 
-# Targets
-all: server client
+# Source files
+SERVER_SRC = server.cpp Room.cpp
+CLIENT_SRC = client.cpp
 
-server: server.cpp
-	$(CXX) $(CXXFLAGS) server.cpp -o server
+# Output executables
+SERVER_BIN = server
+CLIENT_BIN = client
 
-client: client.cpp
-	$(CXX) $(CXXFLAGS) client.cpp -o client
+# Build all targets
+all: $(SERVER_BIN) $(CLIENT_BIN)
 
-# Clean up binaries
+# Server build
+$(SERVER_BIN): $(SERVER_SRC)
+	$(CXX) $(CXXFLAGS) $(SERVER_SRC) -o $(SERVER_BIN) -lpthread
+
+# Client build
+$(CLIENT_BIN): $(CLIENT_SRC)
+	$(CXX) $(CXXFLAGS) $(CLIENT_SRC) -o $(CLIENT_BIN) -lpthread
+
+# Clean up
 clean:
-	rm -f server client
+	rm -f $(SERVER_BIN) $(CLIENT_BIN)
